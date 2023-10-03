@@ -6,14 +6,12 @@ This Bash script is designed to automate the process of finding URLs with specif
 Usage:
 
 bash
-Copy code
-./Findext.sh <url>
+  ./Findext.sh -u <url>
+  ./Findext.sh -l lista.txt
+
 Dependencies:
 
 Bash
 gau (GitHub All URLs tool)
 Example Usage:
 
-bash
-Copy code
-./Findext.sh http://example.com
