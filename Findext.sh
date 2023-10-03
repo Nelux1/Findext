@@ -1,23 +1,69 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-    echo "Usage: $0 <url>"
+# Función para mostrar el mensaje de ayuda
+usage() {
+    echo "Usage: $0 [-u <url> | -l <file>]"
     exit 1
+}
+
+# Manejo de argumentos usando un bucle while
+while getopts ":u:l:" option; do
+    case $option in
+        u)
+            url=$OPTARG
+            ;;
+        l)
+            urls_file=$OPTARG
+            ;;
+        \?)
+            echo "Opción inválida: -$OPTARG"
+            usage
+            ;;
+        :)
+            echo "La opción -$OPTARG requiere un argumento."
+            usage
+            ;;
+    esac
+done
+
+# Verificar que al menos una de las banderas esté presente
+if [[ -z $url && -z $urls_file ]]; then
+    echo "Debes especificar una URL (-u) o un archivo de URLs (-l)."
+    usage
 fi
 
-url=$1
-extensions=("php" "js" "json" "asp" "aspx" "csv" "txt" "pdf" "doc" "docx" "xml" "rar" "zip" "tar" "xls" "xlsx" "html")
+# Leer URLs desde el archivo si la bandera -l está presente
+if [[ ! -z $urls_file ]]; then
+    if [[ ! -f $urls_file ]]; then
+        echo "El archivo $urls_file no existe."
+        exit 1
+    fi
+    urls=($(cat $urls_file))
+else
+    urls=($url)
+fi
 
+# Crear directorio de salida si no existe
 mkdir -p files
 
-for ext in "${extensions[@]}"; do
-    output_file="files/${ext}.txt"
-    
-    # Realizar búsqueda y contar resultados
-    count=$(gau --subs $url | grep -P "\w+\.$ext(\?|$)" | sort -u | tee "$output_file" | wc -l)
-    
-    # Eliminar archivo si está vacío
-    [ -s "$output_file" ] || rm "$output_file"
-    
-    echo "Extension: $ext, Found: $count"
+# Bucle para cada URL
+for url in "${urls[@]}"; do
+    echo "Buscando en: $url"
+    # Limpiar la URL para usarla como parte del nombre del archivo
+    clean_url=$(echo "$url" | sed 's/[^a-zA-Z0-9]/_/g')
+    for ext in "php" "js" "json" "asp" "aspx" "csv" "txt" "pdf" "doc" "docx" "xml" "rar" "zip" "tar" "xls" "xlsx" "html"; do
+        # Crear nombre de archivo de salida limpio
+        output_file="files/${ext}_${clean_url}.txt"
+        
+        # Realizar búsqueda y contar resultados
+        count=$(gau --subs "$url" | grep -P "\w+\.$ext(\?|$)" | sort -u | tee "$output_file" | wc -l)
+        
+        # Eliminar archivo si está vacío
+        [ -s "$output_file" ] || rm "$output_file"
+        
+        if [ "$count" -gt 0 ]; then
+            echo "Extension: $ext, Found: $count"
+        fi
+    done
 done
+         
