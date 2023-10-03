@@ -50,7 +50,7 @@ mkdir -p files
 for url in "${urls[@]}"; do
     echo "Buscando en: $url"
     # Limpiar la URL para usarla como parte del nombre del archivo
-    clean_url=$(echo "$url" | sed 's/[^a-zA-Z0-9]/_/g')
+    clean_url=$(echo "$url" | sed -e 's,https://,,g' -e 's,/$,,g' | awk -F/ '{print $1}')
     for ext in "php" "js" "json" "asp" "aspx" "csv" "txt" "pdf" "doc" "docx" "xml" "rar" "zip" "tar" "xls" "xlsx" "html"; do
         # Crear nombre de archivo de salida limpio
         output_file="files/${ext}_${clean_url}.txt"
@@ -66,4 +66,3 @@ for url in "${urls[@]}"; do
         fi
     done
 done
-         
