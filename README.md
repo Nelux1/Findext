@@ -11,7 +11,5 @@ Usage:
 
 Dependencies:
 
-Bash
-gau (GitHub All URLs tool)
-Example Usage:
+
 
