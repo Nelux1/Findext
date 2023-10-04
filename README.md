@@ -5,8 +5,8 @@ This Bash script is designed to automate the process of finding URLs with specif
 
 Usage:
 
-bash
   ./Findext.sh -u <url>
+
   ./Findext.sh -l lista.txt
 
 Dependencies:
