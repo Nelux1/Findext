@@ -9,7 +9,8 @@ Usage:
 
   ./Findext.sh -l lista.txt
 
-Dependencies: https://github.com/lc/gau.git
+Dependencies: https://github.com/lc/gau.git and https://github.com/projectdiscovery/httpx.git
+
 
 
 
