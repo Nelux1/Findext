@@ -53,7 +53,7 @@ for url in "${urls[@]}"; do
     echo "Buscando en: $url"
     # Limpiar la URL para usarla como parte del nombre del archivo
     clean_url=$(echo "$url" | sed -e 's,https://,,g' -e 's,/$,,g' | awk -F/ '{print $1}')
-    for ext in "php" "js" "json" "asp" "aspx" "csv" "txt" "pdf" "doc" "docx" "xml" "rar" "zip" "tar" "xls" "xlsx" "html"; do
+    for ext in "php" "js" "json" "asp" "aspx" "csv" "txt" "pdf" "doc" "docx" "xml" "rar" "zip" "tar" "xls" "xlsx" "html" "sql" "jar" "jsp" "old" "db" "bak" "backup" "config" ; do
         # Crear nombre de archivo de salida limpio
         output_file="files/${ext}_${clean_url}.txt"
         
