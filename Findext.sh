@@ -45,6 +45,8 @@ fi
 
 # Crear directorio de salida si no existe
 mkdir -p files
+# Archivo para todas las URLs
+#all_urls_file="files/all_urls.txt"
 
 # Bucle para cada URL
 for url in "${urls[@]}"; do
@@ -56,13 +58,14 @@ for url in "${urls[@]}"; do
         output_file="files/${ext}_${clean_url}.txt"
         
         # Realizar búsqueda y contar resultados
-        count=$(gau --subs "$url" | grep -P "\w+\.$ext(\?|$)" | sort -u | tee "$output_file" | wc -l)
-        
+        count=$(gau --subs "$url" | grep -P "\w+\.$ext(\?|$)" | sort -u | httpx -silent | tee "$output_file" | wc -l)
+        gau --subs "$url" | grep -P "\w+\.$ext(\?|$)" | sort -u | httpx -silent >> files/all_urls_file.txt
         # Eliminar archivo si está vacío
         [ -s "$output_file" ] || rm "$output_file"
         
         if [ "$count" -gt 0 ]; then
             echo "Extension: $ext, Found: $count"
+
         fi
     done
 done
