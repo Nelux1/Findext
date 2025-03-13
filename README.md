@@ -17,7 +17,9 @@ Store all results in a master file (all_urls.txt).
 
 Usage
 
-Usage: ./script.sh [-u <url> | -l <file>]
+Usage:
+
+    ./findext.sh [-u <url> | -l <file>]
 
 Options
 
@@ -42,11 +44,11 @@ Example Usage
 
 Scan a single URL:
 
-    ./script.sh -u example.com
+    ./findext.sh -u example.com
 
 Scan multiple URLs from a file:
 
-    ./script.sh -l urls.txt
+    ./findext.sh -l urls.txt
 
 Output
 
